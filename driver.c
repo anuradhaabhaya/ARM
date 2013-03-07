@@ -71,7 +71,8 @@ int main(int argc, char **argv)
 	init(b, N);
 	
 	/* Tour de chauffe */
-	kernel3(N, a, b, c);
+	/* ATTENTION : DOIT ETRE LE MEME KERNEL QUE DANS LA BOUCLE !!! */
+	kernel0(N, a, b, c);
 	
 	/* Lancement du kernel */
 	
@@ -79,7 +80,7 @@ int main(int argc, char **argv)
 	
 	for(i = 0; i < nb_repets; i=i+1)
 	{
-		kernel3(N, a, b, c);
+		kernel0(N, a, b, c);
 	}
 	
 	t2 = getticks();
@@ -91,7 +92,7 @@ int main(int argc, char **argv)
 	
 	/* Affichage du résultat */	
 	
-	cycles = (double) elapsed(t2, t1) / (nb_repets*N*2);
+	cycles = (double) elapsed(t2, t1) / (nb_repets*N);
 	printf("%.2f\n", cycles);
 	
 	/* Liberation memoire */
