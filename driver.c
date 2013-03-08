@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 {
 	int N, nb_repets, i; 
 	ticks t1, t2;
-	double cycles;
+	double cycles = 0;
 	
 	double *a, *b, *c, *standard;
 	
@@ -84,7 +84,8 @@ int main(int argc, char **argv)
 	}
 	
 	t2 = getticks();
-	
+	cycles = (double) elapsed(t2,t1) / ((double)nb_repets*N);
+
 	/* Vérification */
 	
 	kernel0(N, a, b, standard);	
@@ -92,7 +93,6 @@ int main(int argc, char **argv)
 	
 	/* Affichage du résultat */	
 	
-	cycles = (double) elapsed(t2, t1) / (nb_repets*N);
 	printf("%.2f\n", cycles);
 	
 	/* Liberation memoire */
