@@ -48,12 +48,8 @@ def lancer_metareps(N, nb_reps):
 
 
 ##
-# Ajoute les resultats dans le fichier csv
+# Ajoute les resultats dans le fichier data de gnuplot
 #
-def stocker_resultats_csv(N, liste_resultats, csv_writer):
-	csv_writer.writerow([N, float(N*3*8)/1024, mediane(liste_resultats), min(liste_resultats)])
-
-
 def stocker_resultats(N, liste_resultats):
 	return str(N) + ' ' + str(float(N*3*8)/1024) + ' ' + \
 		str(mediane(liste_resultats)) + ' ' + str(min(liste_resultats)) + '\n'
@@ -64,7 +60,6 @@ def stocker_resultats(N, liste_resultats):
 # pour la mesure
 #
 def approximation_nb_reps(N):
-	#return pow(10, log(100000000, 10)-int(log(N, 10)))
 	return pow(10, log(100000000, 10)-int(log(N, 10)))
 
 ##
@@ -73,11 +68,11 @@ def approximation_nb_reps(N):
 def main():
 	# description du script
 	desc = "Lancement de mesures et generation \
-			d'un fichier .csv contenant les resultats"
+			d'un fichier .data contenant les resultats et creation d'un script gnuplot"
 	
 	# On recupere les options
 	parser = argparse.ArgumentParser(description=desc)
-	parser.add_argument('-o', action="store", dest="csv_file",  
+	parser.add_argument('-o', action="store", dest="datafile",  
 						help='Nom du fichier qui contiendra les resultats',  
 						required=True)
 	args = parser.parse_args()
@@ -89,7 +84,7 @@ def main():
 
 	# Ouverture du fichier csv en mode ecrite (ecrase si existe deja)
 	#csv_writer = csv.writer(open(args.csv_file, 'w')) 	
-	f = open(args.csv_file + ".data", 'w')
+	f = open(args.datafile + ".data", 'w')
 	
 	# En-tete du fichier csv
 	#csv_writer.writerow(['N', 'Taille (Mo)', 'Mediane', 'Min' ])
@@ -132,17 +127,19 @@ def main():
 	
 	# Creation du graphe
 	
-	f = os.popen("/usr/bin/gnuplot", "w")
+	f = open(args.datafile + ".gnuplot", "w")
 	
-	datafile = "'" + args.csv_file + ".data'"
+	datafile = "'" + args.datafile + ".data'"
 	print datafile
 	
 	script_gnuplot =  "set terminal png medium\n"
-	script_gnuplot += "set output '" + args.csv_file + ".png'\n"
+	script_gnuplot += "set output '" + args.datafile + ".png'\n"
 	script_gnuplot += "set title 'Mesure de performance'\n"
 	script_gnuplot += "set xlabel 'N'\n"
 	script_gnuplot += "set ylabel 'Nombre de cycles'\n"
-	script_gnuplot += "set nokey\n"
+	script_gnuplot += "set key on outside\n"
+	script_gnuplot += "set grid ytics xtics mxtics\n"
+
 	script_gnuplot += "plot " + datafile + "using 1:3 with linespoints title 'Mediane', \
 	" +  datafile + "using 1:4 with linespoints title 'Minimum'\n"
 	

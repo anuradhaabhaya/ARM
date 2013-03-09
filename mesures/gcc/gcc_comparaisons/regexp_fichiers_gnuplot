@@ -1,0 +1,8 @@
+
+# Garder la mediane (deuxieme colonne)
+cat gcc_O2.data | sed -s 's/[^ ]* [^ ]* \([^ ]*\) [^ ]*/\1/g'
+
+# Garder la premiere colonne (valeurs de N)
+
+
+cat gcc_O3_march_native.data | sed -s 's/^\([0-9]*\) [^ ]* [^ ]* [^ ]*/\1/g'

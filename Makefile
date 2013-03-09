@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-O3 -Wall -g
+CFLAGS=-O3 -Ofast -m64 -mfpmath=sse -m128bit-long-double -msseregparm -march=native -flto -funroll-all-loops -Wall -g
 EXEC_NAME=driver
 OBJ_FILES=kernel.o driver.o
 

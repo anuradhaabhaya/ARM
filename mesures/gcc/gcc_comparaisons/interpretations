@@ -1,0 +1,42 @@
+ 
+source : 
+http://software.intel.com/en-us/blogs/2012/09/26/gcc-x86-performance-hints
+
+gcc -v
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.6/lto-wrapper
+
+Target: x86_64-linux-gnu
+
+Configuré avec: ../src/configure -v --with-pkgversion='Ubuntu/Linaro 4.6.3-1ubuntu5' 
+--with-bugurl=file:///usr/share/doc/gcc-4.6/README.Bugs --enable-languages=c,c++,fortran,objc,obj-c++ 
+--prefix=/usr --program-suffix=-4.6 --enable-shared --enable-linker-build-id --with-system-zlib 
+--libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --with-gxx-include-dir=/usr/include/c++/4.6 
+--libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu 
+--enable-libstdcxx-debug --enable-libstdcxx-time=yes 
+--enable-gnu-unique-object --enable-plugin --enable-objc-gc 
+--disable-werror --with-arch-32=i686 --with-tune=generic
+ --enable-checking=release --build=x86_64-linux-gnu 
+ --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Modèle de thread: posix
+gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu5) 
+
+
+Le compilateur n'a pas été configuré par défaut avec "--with-mfpmath=sse".
+Par défaut utilisation du modele x87, on doit activer sse ?
+
+Interprétation des résultats avec GCC :
+
+Pour les grandes valeurs de N, on ne voit pas de grande différence entre O2, O3.
+
+Pour vérifier que le code était bien optimisé, nous avons analysé les performances après compilation -O0.
+Le code est bien optimisé (voir : )
+
+Même en spécifiant l'option -march=native, le code ne va pas plus vite, 
+GCC n'a pas une grande connaissance du processeur ?
+
+
+
+Autres options possibles :
+
+-Ofast
