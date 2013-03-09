@@ -11,7 +11,7 @@ void init(double tab[], int N)
 	
 	for(i=0; i<N; i=i+1)
 	{
-		tab[i] = rand() / RAND_MAX;
+		tab[i] = (double)rand() / RAND_MAX;
 	}
 }
 
