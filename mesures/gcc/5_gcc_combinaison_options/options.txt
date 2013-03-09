@@ -1,0 +1,5 @@
+
+Combinaison options : 
+gcc -O3 -msse2 -msse3 -mfpmath=sse -Ofast -flto -march=native -funroll-all-loops -Wall -g -o driver.o -c driver.c
+
+TODO: essayer avec -mSSE4.2

@@ -35,7 +35,10 @@ Le code est bien optimisé (voir : )
 Même en spécifiant l'option -march=native, le code ne va pas plus vite, 
 GCC n'a pas une grande connaissance du processeur ?
 
+Combinaison options : 
+gcc -O3 -msse2 -msse3 -mfpmath=sse -Ofast -flto -march=native -funroll-all-loops -Wall -g -o driver.o -c driver.c
 
+TODO: essayer avec -mSSE4.2
 
 Autres options possibles :
 

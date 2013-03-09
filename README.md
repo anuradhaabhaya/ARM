@@ -16,11 +16,11 @@ TRES IMPORTANT : Pour toutes les parties, vous devez justifier vos choix. Vous d
 
 Partie I
 ========
-1) Ecrivez un driver permettant de mesurer la performance du noyau
-2) Compilez le noyau avec gcc -O2
-3) Mesurez la performance du noyau
-4) Recommencez avec gcc -O3, gcc -O3 -march=native, icc -O2, icc -O3 et icc -O3 -xHost.
-5) Recommencez avec d'autres options d'optimisation qui vous sembleraient pertinentes (vous devrez les chercher dans la documentation de gcc et d'icc), que vous pourrez combiner entre elles...
+1) Ecrivez un driver permettant de mesurer la performance du noyau  
+2) Compilez le noyau avec gcc -O2  
+3) Mesurez la performance du noyau  
+4) Recommencez avec gcc -O3, gcc -O3 -march=native, icc -O2, icc -O3 et icc -O3 -xHost.  
+5) Recommencez avec d'autres options d'optimisation qui vous sembleraient pertinentes (vous devrez les chercher dans la documentation de gcc et d'icc), que vous pourrez combiner entre elles...  
 
 Partie II
 =========
