@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-O2 -Wall -g
+CFLAGS=-O3 -Wall -g
 EXEC_NAME=driver
 OBJ_FILES=kernel.o driver.o
 
