@@ -50,10 +50,9 @@ int main(int argc, char **argv)
 	a = malloc(N*sizeof(double)); 
 	b = malloc(N*sizeof(double));
 	c = malloc(N*sizeof(double));
-	
 	standard = malloc(N*sizeof(double));
 
-	if(a == NULL || b == NULL || c == NULL)
+	if(a == NULL || b == NULL || c == NULL || standard == NULL)
 	{
 		printf("Erreur malloc\n");
 		
@@ -63,6 +62,8 @@ int main(int argc, char **argv)
 			free(b);
 		if(c != NULL)
 			free(c);
+		if(standard != NULL)
+			free(standard);
 		
 		exit(1);
 	}
@@ -87,6 +88,7 @@ int main(int argc, char **argv)
 	cycles = (double) elapsed(t2,t1) / ((double)nb_repets*N);
 
 	/* Vérification */
+	
 	
 	kernel0(N, a, b, standard);	
 	verifier_resultats(N, standard, c);

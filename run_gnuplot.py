@@ -115,10 +115,7 @@ def main():
 	liste_N += range(10000, 100000, 10000) 
 	
 	# [100000; 900000] par pas de 100000
-	liste_N += range(100000, 1000000, 100000) 
-	
-	# [1000000; 10000000] par pas de 1000000
-	liste_N += range(1000000, 11000000, 1000000) 
+	liste_N += range(100000, 1100000, 100000) 
 	
 	print "\n-------------------------------------------------------"
 	print "Lancement des mesures sur les valeurs de N suivantes : "
@@ -135,19 +132,23 @@ def main():
 	
 	# Creation du graphe
 	
+	f = os.popen("/usr/bin/gnuplot", "w")
+	
 	datafile = "'" + args.csv_file + ".data'"
 	print datafile
 	
+	script_gnuplot =  "set terminal png medium\n"
+	script_gnuplot += "set output '" + args.csv_file + ".png'\n"
+	script_gnuplot += "set title 'Mesure de performance'\n"
+	script_gnuplot += "set xlabel 'N'\n"
+	script_gnuplot += "set ylabel 'Nombre de cycles'\n"
+	script_gnuplot += "set nokey\n"
+	script_gnuplot += "plot " + datafile + "using 1:3 with linespoints title 'Mediane', \
+	" +  datafile + "using 1:4 with linespoints title 'Minimum'\n"
 	
-	f = os.popen("/usr/bin/gnuplot", "w")
-	f.write("set terminal png medium\n")
-	f.write("set output '" + args.csv_file + ".png'\n")
-	f.write("set title 'Mesure de performance'\n")
-	f.write("set xlabel 'N'\n")
-	f.write("set ylabel 'Nombre de cycles'\n")
-	f.write("set nokey\n")
-	f.write("plot " + datafile + "using 1:3 with linespoints title 'Mediane', \
-	" +  datafile + "using 1:4 with linespoints title 'Minimum'\n")
+	print script_gnuplot
+	
+	f.write(script_gnuplot)
 	f.close()
 
 if __name__ == '__main__':
