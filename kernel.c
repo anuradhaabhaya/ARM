@@ -32,6 +32,30 @@ void kernelNTS(int n, double a[n], double b[n], double c[n])
 	}
 }
 
+
+/**
+ * Utilisation des restrict, pour indiquer au compilateur (gcc) la proximité spatiale des
+ * accés au pointeur. Cela offre un gain de perfomance, petit, mais présent.
+ */
+void kernel4(int n, double *__restrict__ a, double *__restrict__ b, double *__restrict__ c)
+{
+	int i;
+	int k = n/2;
+
+	c[0] = a[0] * b[0];
+	
+	for(i=1; i<k ; i++)
+	{		
+		c[i] = 2 * (a[i] * b[i]) ;
+	
+	}
+
+	for(i=k; i<n; i++)
+	{
+		c[i] = 2*(a[i] + b[i]);
+	}
+}
+
 void kernel3(int n, double a[n], double b[n], double c[n])
 {
 	int i;
