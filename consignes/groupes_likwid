@@ -1,0 +1,66 @@
+Bonjour,
+
+Pour avoir plus de détails sur un groupe : likwid-perfctr -H -g <groupe>
+
+Certains groupes peuvent ne pas être disponibles sur votre machine. Par exemple, une machine dépourvue de cache L3 n'aura pas les groupes L3 et L3CACHE.
+
+Pour des mesures en L1 :
+- le groupe CACHE devrait vous donner un "Data cache miss ratio" proche de 0%. 0.01 = 1%. 
+"Data cache" = L1D (cache L1 dédié aux données). Je rappelle qu'un "cache miss ratio" est 
+le rapport entre le nombre de miss et la somme du nombre de hits et de miss.
+ miss = demande d'une donnée absente du cache et 
+hit = contraire de miss = demande d'une donnée présente dans le cache.
+- le groupe L2 devrait vous donner un "L2 bandwidth" plutôt faible comparée à celle de votre cache L2 
+(qui doit être de l'ordre de plusieurs dizaines de GBytes/s). 
+L2 bandwidth est la bande passante (débit) entre le cache L2 et le processeur. 
+Idem pour les groupes L3 et MEM (équivalents du groupe L2 pour le L3 et la RAM).
+
+Pour des mesures en L2 :
+- le groupe CACHE devrait vous donner un "Data cache miss ratio" important, supérieur à 5-10%.
+- le groupe L2 devrait vous donner un "L2 bandwidth" plutôt importante comparée à celle de votre cache L2
+(qui doit être de l'ordre de plusieurs dizaines de GBytes/s).
+- le groupe L2CACHE (équivalent du groupe CACHE pour le L2) devrait vous donner un miss ratio faible, de l'ordre de quelques pourcents.
+- les groupe L3 et MEM devraient donner des résultats similaires au groupe L2 pour des mesures en L1 : bande passante relativement faible.
+
+Pour des expériences en L3 :
+- le groupe L2CACHE (équivalent de CACHE pour le L2) devrait vous donner un miss ratio important, supérieur à 5-10%.
+- le groupe L3 devrait vous donner un "L3 bandwidth" plutôt important comparée à celle de votre cache L3 
+(qui doit être de l'ordre de plusieurs dizaines de GBytes/s).
+- le groupe L3CACHE (équivalent de CACHE pour le L3) devrait vous donner un miss ratio faible, 
+de l'ordre de quelques pourcents.
+- le groupe MEM devrait vous donner des résultats similaires à des mesures en L1.
+
+Pour des expériences en RAM :
+- le groupe L3CACHE (équivalent de CACHE pour le L3) devrait vous donner un miss ratio important, supérieur à 5-10%.
+- le groupe MEM devrait vous donner un "Memory bandwidth" relativement important comparé à celui
+ de votre RAM (qui doit être de l'ordre de plusieurs GB/s).
+
+Le groupe DATA permet de vérifier si le rapport entre le nombre de loads et de stores est cohérent 
+entre l'analyse statique (MAQAO STAN) et l'analyse dynamique (mesure).
+
+Le groupe BRANCH permet de contrôler l'efficacité du prédicteur de branchement du processeur. 
+Si votre boucle est régulière
+ (s'il n'y a pas de if dedans ou un if dont la condition est invariante de boucle),
+ vous devriez avoir un "Branch misprediction ratio" proche de 0%.
+
+Le groupe FLOPS_X87 (nombre d'opérations en virgule flottante par seconde exécutées par l'unité x87) 
+devrait tout mettre à 0 ou tout du moins à des valeurs très faibles (quelques MFlops/s).
+Sinon, une grosse optimisation vous tend les bras et je vous invite à nous consulter à ce sujet.
+
+Le groupe FLOPS_SP (nombre d'opérations en virgule flottante simple précision par seconde exécutées par l'unité SSE) 
+devrait tout mettre à 0 ou tout du moins à des valeurs 
+très faibles si votre code ne manipule que des éléments de type "double" (double précision).
+
+Le groupe FLOPS_DP est l'équivalent de FLOPS_SP en double précision. 
+En C, le type "float" correspond à un nombre flottant en simple précision.
+
+Pour la signification et l'intérêt d'autres groupes non mentionnés ci-dessus, nous consulter.
+
+
+
+
+
+
+
+likwid-perfctr -c 0-3 -g L3CACHE ./driver 100000 1000
+likwid-topology 

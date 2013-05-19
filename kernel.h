@@ -4,7 +4,6 @@
 
 
 #include "kernel.h"
-#include <emmintrin.h>
 
 
 void kernelNTS(int n, double a[n], double b[n], double c[n]);

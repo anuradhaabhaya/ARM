@@ -1,0 +1,76 @@
+Pour soumettre votre étude de cas, chaque groupe doit envoyer par mail à
+son encadrant une archive compressée (format zip, tgz, tar.gz ou tar.bz2) contenant au moins :
+- le rapport commun et l'ensemble des rapports individuels (le tout au format PDF),
+- un Makefile,
+- les fichiers sources requis par le Makefile,
+- un script shell (.sh) assurant a minima :
+ * la compilation (via make et utilisant le compilateur et les options
+   précisés avec votre sujet, à défaut gcc -O2),
+ * l'exécution multiple (méta-répétitions), pour une taille donnée,
+   de la version originale puis de la version optimisée.
+
+Bon courage,
+eo et po
+
+
+-----------
+
+
+Bonsoir,
+
+Vous trouverez ci-dessous des conseils et rappels pour améliorer vos rapports (et donc vos notes).
+
+Je rappelle qu'il n'y a pas de soutenance.
+
+Bon courage,
+eo et po
+
+=======================================================
+
+1) Des choix non justifiés et des résultats non commentés n'ont pas ou peu de valeur 
+(donc ne rapporteront qu'une partie des points).
+
+Ex concret : si vous trouvez 2,25 cycles par itération avec icc -O2 et 2,87 avec gcc -O2, ne vous contentez pas de nous rapporter ces deux valeurs mais commentez-les : lequel est le meilleur et qu'est-ce qui, selon vous, explique la différence ? Le compilateur génère du binaire => comparez donc les binaires (diff sur les fichiers binaires, code assembleur, rapports MAQAO...). Si deux binaires sont identiques (par exemple, ceux générés par icc -O2 et icc -O3), il est inutile de faire la mesure... mais utile de le remarquer.
+
+Autre ex concret : vous devez justifier chaque étape de votre transformation. Pour cela, vous devez vous appuyer sur des notions vues dans le module (localité spatiale, fonctionnement des caches...), des mesures likwid-perfctr (uniquement pour les lignes pertinentes, et en justifiant le choix de tel ou tel groupe), des extraits de rapports MAQAO (uniquement pour les lignes pertinentes, de préférence en lvl=2, lvl=1 uniquement si l'info pertinente n'est donnée que par lvl=1), des observations sur le code source... : ces derniers ne doivent pas servir à faire joli et à remplir des pages de rapport. Eventuellement, si vous tenez à nous communiquer des rapports MAQAO ou likwid-perfctr complets, vous pouvez les déporter dans une annexe à la fin de votre rapport.
+
+En particulier, vous devez expliquer et justifier votre méthode de mesure (on doit sentir que vous avez assimilé les cours et TDs du premier semestre) et prouver que votre code optimisé calcule bien la même chose (modulo l'associativité) que le code original (méthode de validation, par ex sous forme d'un programme C).
+
+3) Au sujet de la présentation des résultats :
+3.1) Des résultats relatifs sont en général plus intéressants que des résultats absolus. Ex concret : 2,32 cycles par itération est beaucoup plus informatif que 7 546 578 645 cycles.
+3.2) N'affichez que 3 chiffres significatifs. Qu'apporte d'avoir 2,31558476548869 cycles par itération plutôt que 2,31 ?
+3.3) Evitez au maximum les tableaux de valeurs : préférez-leur des graphiques.
+3.4) Au sujet des graphiques, nous voulons :
+- un titre, par ex "Evolution de la performance en fonction de la taille des tableaux".
+- une légende sur chaque axe (avec l'unité utilisée, ex: "Cycles par itération", "Taille des tableaux", "Débit de calcul en GFLOPS/s (simple précision)"...)
+- si plusieurs séries de données, une légende pour chacune (et non pas "colonne A", "colonne B"...)
+- si vous ne savez pas faire demandez à d'autres camarades qui savent faire ou, à défaut, à vos encadrants.
+
+4) Une fois une optimisation réalisée analysez le résultat: Est-elle efficace, oui ou non ? Pourquoi à votre avis ? Autocritiquez-vous !
+
+5) Pour la partie 2, même si je n'ai pas souvenir que nous vous l'ayons demandé, il peut être intéressant d'ajouter une courbe représentant l'évolution de la performance en fonction de la taille des tableaux, pour un échantillon de tailles allant du début du L1 jusqu'à la RAM (inutile d'aller au-delà du double de la taille du plus grand niveau de cache) et ce pour le code original (gcc -O2) et pour votre code optimisé (en gcc -O2, sauf mention contraire précisée avec votre sujet). Vous pourrez y reporter (superposer) plein de choses intéressantes comme :
+- la borne (estimation statique) donnée par MAQAO (ligne horizontale),
+- la taille que vous avez choisie pour mesurer l'impact de vos transformations (ligne verticale),
+- et celles frontières entre les niveaux de cache présents sur votre machine (y compris celle entre le cache de dernier niveau et la RAM).
+
+6) Il n'est pas interdit d'utiliser dans la partie 2 des choses que vous avez apprises/mesurées dans la partie 1... Vous pouvez par exemple essayer sur votre code optimisé un couple (compilateur;option d'optimisation) qui a été efficace sur le code original.
+
+7) Quand vous faites des mesures avec likwid-perfctr, ajustez le nombre de répétitions de telle sorte que chaque mesure dure environ 3 à 5 secondes. En-deçà les mesures peuvent ne pas être significatives et au-delà vous perdrez du temps inutilement.
+
+8) Utilisez les correcteurs orthographiques de vos traitements de texte : même sous OpenOffice, vous avez au moins le soulignage des fautes d'orthographe (Word rajoutant la correction syntaxique et sémantique).
+
+
+
+----------------------
+
+Ce mail fait suite à des questions de certains d'entre vous.
+
+1) Si une machine pose vraiment problème (likwid fonctionne pas ou mal, instabilités, processeur non simulé par MAQAO...), il est possible de nous donner des mesures faites sur une autre machine. Ce qui nous importe c'est que chacun ait fait ses mesures (lui-même) dans son niveau de la hiérarchie mémoire, et ce pour toutes les parties du sujet.
+
+2) Au sujet des rapports, il est possible d'en rendre un seul par groupe à condition que les contributions individuelles soient clairement identifiables/distinguables ; les notes sont individuelles, c'est à dire que, dans un même groupe, tout le monde n'aura pas forcément la même note. Par exemple, vous pouvez concaténer le rapport commun et les rapports individuels dans un seul fichier (c'est facile à faire sous Word ou OpenOffice, par copier-coller, mais c'est aussi possible en PDF, CF google). Ou encore intégrer les contributions individuelles dans le rapport commun sous forme de paragraphes/sections dont le titre contient le nom de l'auteur. Tous les membres du groupe doivent avoir une contribution individuelle (déjà car chacun devait travailler dans un niveau différent de la hiérarchie mémoire).
+
+3) Pour les parties individuelles, on s'attend (en plus des mesures dans le niveau mémoire choisi) à ce que chacun exprime en quoi il a eu des différences avec la partie commune (ou les autres contributions individuelles). Une optimisation peut payer en L3/RAM mais être contre-productive en L1/L2 (ex typique : tiling). Par ailleurs, l'estimation MAQAO risque d'être très fidèle en L1 mais clairement optimiste en L3/RAM (MAQAO estimant des cycles dans les meilleures conditions : données en L1).
+
+4) Il est possible d'envoyer une version préliminaire du rapport commun ou/et individuel à votre encadrant pour qu'il puisse vous faire des remarques. Il fera ce qu'il pourra de son côté avec sa charge de travail (pas de garantie de réponse rapide).
+
+5) La date de soumission est à présent très proche (et conforme à ce que nous vous avions dit oralement [environ 20-25 mai]) : probablement lundi ou mercredi prochain (20 ou 22 mai). Je vais essayer de vous la confirmer aujourd'hui (j'attends la réponse de l'administration quant aux dates de jury).

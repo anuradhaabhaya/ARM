@@ -48,11 +48,12 @@ int main(int argc, char **argv)
 	srand(0);
 	
 	/* Initialisation tableaux */
-	//~ a = malloc(N*sizeof(double)); 
-	//~ b = malloc(N*sizeof(double));
-	//~ c = malloc(N*sizeof(double));
-	//~ standard = malloc(N*sizeof(double));
+	a = malloc(N*sizeof(double)); 
+	b = malloc(N*sizeof(double));
+	c = malloc(N*sizeof(double));
+	standard = malloc(N*sizeof(double));
 	
+	/*
 	posix_memalign(&pa, 16, N*sizeof(double));
 	posix_memalign(&pb, 16, N*sizeof(double));
 	posix_memalign(&pc, 16, N*sizeof(double));
@@ -62,6 +63,7 @@ int main(int argc, char **argv)
 	b = pb;
 	c = pc;
 	standard = ps;
+	*/
 
 	if(a == NULL || b == NULL || c == NULL || standard == NULL)
 	{
@@ -84,7 +86,7 @@ int main(int argc, char **argv)
 	
 	/* Tour de chauffe */
 	/* ATTENTION : DOIT ETRE LE MEME KERNEL QUE DANS LA BOUCLE !!! */
-	kernelNTS(N, a, b, c);
+	kernel0(N, a, b, c);
 	
 	/* Lancement du kernel */
 	
@@ -92,15 +94,13 @@ int main(int argc, char **argv)
 	
 	for(i = 0; i < nb_repets; i=i+1)
 	{
-		kernelNTS(N, a, b, c);
+		kernel0(N, a, b, c);
 	}
 	
 	t2 = getticks();
 	cycles = (double) elapsed(t2,t1) / ((double)nb_repets*N);
 
 	/* Vérification */
-	
-	
 	kernel0(N, a, b, standard);	
 	verifier_resultats(N, standard, c);
 	

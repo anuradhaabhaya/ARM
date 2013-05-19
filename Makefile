@@ -1,5 +1,5 @@
-CC=icc
-CFLAGS=-O3 -xhost -axsse4.2 -opt-prefetch -ipo -funroll-loops -Wall -g
+CC=gcc
+CFLAGS=-O2
 EXEC_NAME=driver
 OBJ_FILES=kernel.o driver.o
 
