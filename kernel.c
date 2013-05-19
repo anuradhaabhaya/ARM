@@ -1,4 +1,8 @@
 #include "kernel.h"
+#include <emmintrin.h>
+
+
+
 
 
 /**
@@ -49,12 +53,11 @@ void kernelNTS(int n, double a[n], double b[n], double c[n])
 	c[0] = a[0] * b[0];
 }
 
-void kernel6 (int n, double a[n], double b[n], double c[n])
+void kernel8(int n, double a[n], double b[n], double c[n])
 {
 	int i;
 	int k = n/2;
 	int step = 4; 
-
 	
 	for(i=0; i< k - (k%step) ; i+=step)
 	{		
@@ -95,7 +98,7 @@ void kernel6 (int n, double a[n], double b[n], double c[n])
 
 
 //Load = bottle neck !
-void kernel5 (int n, double a[n], double b[n], double c[n])
+void kernel7(int n, double a[n], double b[n], double c[n])
 {
 	int i;
 	int k = n/2;
@@ -146,6 +149,72 @@ void kernel5 (int n, double a[n], double b[n], double c[n])
 	c[0] = a[0] * b[0]; // On le fait ici, quitte à faire une itération en plus
 }
 
+void kernel_omp(int n, double a[n], double b[n], double c[n])
+{
+	int i;
+	int k = n/2;
+
+	#pragma omp parallel for	
+	for(i=0; i<k ; i++)
+	{		
+		c[i] = 2 * (a[i] * b[i]) ;
+	}
+
+	#pragma omp parallel for
+	for(i=k; i<n; i++)
+	{
+		c[i] = 2*(a[i] + b[i]);
+	}
+
+	c[0] = a[0] * b[0];
+}
+
+void kernel6(int n, double a[n], double b[n], double c[n])
+{
+	int i;
+
+	#pragma vector aligned
+	#pragma ivdep
+	for(i=0; i<n/2 ; i++)
+	{		
+		c[i] = (a[i] * b[i]) + (a[i] * b[i]) ;	
+	}
+
+	#pragma vector aligned
+	#pragma ivdep
+	for(i=n/2; i<n; i++)
+	{
+		c[i] = 2*(a[i] + b[i]);
+	}
+	
+	
+	c[0] = a[0] * b[0];
+}
+
+
+
+void kernel5(int n, double a[n], double b[n], double c[n])
+{
+	int i;
+	int k = n/2;
+
+	#pragma vector aligned
+	for(i=0; i<k ; i++)
+	{		
+		c[i] = 2 * (a[i] * b[i]) ;	
+	}
+
+	#pragma vector aligned
+	for(i=k; i<n; i++)
+	{
+		c[i] = 2*(a[i] + b[i]);
+	}
+	
+	
+	c[0] = a[0] * b[0];
+	
+}
+
 /**
  * Utilisation des restrict, pour indiquer au compilateur (gcc) la proximité spatiale des
  * accés au pointeur. Cela offre un gain de perfomance, petit, mais présent.
@@ -155,38 +224,37 @@ void kernel4(int n, double *__restrict__ a, double *__restrict__ b, double *__re
 	int i;
 	int k = n/2;
 
-	c[0] = a[0] * b[0];
-	
-	for(i=1; i<k ; i++)
+	for(i=0; i<k ; i++)
 	{		
-		c[i] = 2 * (a[i] * b[i]) ;
-	
+		c[i] = 2 * (a[i] * b[i]) ;	
 	}
 
 	for(i=k; i<n; i++)
 	{
 		c[i] = 2*(a[i] + b[i]);
 	}
+	
+	c[0] = a[0] * b[0];	
 }
 
 void kernel3(int n, double a[n], double b[n], double c[n])
 {
 	int i;
 	int k = n/2;
-
-	c[0] = a[0] * b[0];
 	
-	for(i=1; i<k ; i++)
+	for(i=0; i<k ; i++)
 	{		
-		c[i] = 2 * (a[i] * b[i]) ;
-	
+		c[i] = 2 * (a[i] * b[i]) ;	
 	}
 
 	for(i=k; i<n; i++)
 	{
 		c[i] = 2*(a[i] + b[i]);
 	}
+
+	c[0] = a[0] * b[0];
 }
+
 
 void kernel2(int n, double a[n], double b[n], double c[n])
 {
@@ -226,8 +294,6 @@ void kernel1(int n, double a[n], double b[n], double c[n])
 		c[i] *=2;
 	}
 }
-
-
 
 void kernel0(int n, double a[n], double b[n], double c[n])
 {
