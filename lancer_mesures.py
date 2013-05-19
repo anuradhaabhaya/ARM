@@ -3,6 +3,70 @@ import argparse
 import csv
 from math import log
 
+class mesure:
+	def __init__(self, N, nb_repets):
+		self.N = N
+		self.nb_repets = nb_repets
+
+# variable globale
+liste_N = []
+liste_N.append(mesure(50,       3500000))
+liste_N.append(mesure(100,       1500000))
+liste_N.append(mesure(200,         800000))
+liste_N.append(mesure(300,         600000))
+liste_N.append(mesure(400,         500000))
+liste_N.append(mesure(500,         400000))
+liste_N.append(mesure(600,          350000))
+liste_N.append(mesure(700,          300000))
+liste_N.append(mesure(800,          250000))
+liste_N.append(mesure(900,          200000))
+liste_N.append(mesure(1000,         200000))
+liste_N.append(mesure(1100,          200000))
+liste_N.append(mesure(1200,          150000))
+liste_N.append(mesure(1300,          150000))
+liste_N.append(mesure(1400,           150000))
+liste_N.append(mesure(1500,           150000))
+liste_N.append(mesure(1600,           150000))
+liste_N.append(mesure(1700,           150000))
+liste_N.append(mesure(1800,           150000))
+liste_N.append(mesure(2000,           120000))
+liste_N.append(mesure(2500,           100000))
+liste_N.append(mesure(3000,            70000))
+liste_N.append(mesure(4000,             50000))
+liste_N.append(mesure(5000,             30000))
+liste_N.append(mesure(6000,             30000))
+liste_N.append(mesure(7000,             30000))
+liste_N.append(mesure(8000,             30000))
+liste_N.append(mesure(9000,             20000))
+liste_N.append(mesure(10000,            20000))
+liste_N.append(mesure(10500,             15000))
+liste_N.append(mesure(11000,             15000))
+liste_N.append(mesure(11500,             15000))
+liste_N.append(mesure(12000,             15000))
+liste_N.append(mesure(13000,             12000))
+liste_N.append(mesure(14000,             11000))
+liste_N.append(mesure(15000,              10000))
+liste_N.append(mesure(16000,              10000))
+liste_N.append(mesure(17000,              10000))
+liste_N.append(mesure(18000,              10000))
+liste_N.append(mesure(19000,                8000))
+liste_N.append(mesure(20000,                8000))
+liste_N.append(mesure(30000,                7000))
+liste_N.append(mesure(40000,                3000))
+liste_N.append(mesure(50000,                3000))
+liste_N.append(mesure(75000,                2000))
+liste_N.append(mesure(100000,               1000))
+liste_N.append(mesure(110000,               1000))
+liste_N.append(mesure(120000,               1000))
+liste_N.append(mesure(130000,               1000))
+liste_N.append(mesure(140000,               1000))
+liste_N.append(mesure(150000,               1000))
+liste_N.append(mesure(175000,               1000))
+liste_N.append(mesure(200000,               1000))
+liste_N.append(mesure(500000,               100))
+liste_N.append(mesure(1000000,               10))
+
+
 ##
 # Retourne la mediane de la liste L 
 #
@@ -51,21 +115,9 @@ def lancer_metareps(N, nb_reps):
 # Ajoute les resultats dans le fichier csv
 #
 def stocker_resultats_csv(N, liste_resultats, csv_writer):
-	csv_writer.writerow([N, float(N*3*8)/1024, mediane(liste_resultats), min(liste_resultats)])
-
-
-def stocker_resultats(N, liste_resultats):
-	return str(N) + ' ' + str(float(N*3*8)/1024) + ' ' + \
-		str(mediane(liste_resultats)) + ' ' + str(min(liste_resultats)) + '\n'
-
-
-##
-# Retourne un nombre de repetition pour N approximatif 
-# pour la mesure
-#
-def approximation_nb_reps(N):
-	#return pow(10, log(100000000, 10)-int(log(N, 10)))
-	return pow(10, log(100000000, 10)-int(log(N, 10)))
+	med = mediane(liste_resultats)
+	csv_writer.writerow([N, float(N*3*8)/1024, med])
+	return med
 
 ##
 # Fonction main
@@ -88,11 +140,11 @@ def main():
 		exit()
 
 	# Ouverture du fichier csv en mode ecrite (ecrase si existe deja)
-	#csv_writer = csv.writer(open(args.csv_file, 'w')) 	
-	f = open(args.csv_file + ".data", 'w')
+	csv_writer = csv.writer(open(args.csv_file, 'w')) 	
+	f = open(args.csv_file, 'w')
 	
 	# En-tete du fichier csv
-	#csv_writer.writerow(['N', 'Taille (Mo)', 'Mediane', 'Min' ])
+	csv_writer.writerow(['N', 'Taille (Ko)', 'Nombre de cycles par instruction', ])
 	
 	
 	#####################
@@ -102,53 +154,19 @@ def main():
 	# On concatene dans liste_N, toutes les valeurs 
 	# qui seront prises par N
 
-	# [10; 90] par pas de 10
-	liste_N = range(10, 100, 10) 
 
-	# [100; 900] par pas de 100
-	liste_N += range(100, 1000, 100) 
-	
-	# [1000; 9000] par pas de 1000
-	liste_N += range(1000, 10000, 1000)
-	
-	# [10000; 90000] par pas de 10000
-	liste_N += range(10000, 100000, 10000) 
-	
-	# [100000; 900000] par pas de 100000
-	liste_N += range(100000, 1000000, 100000) 
-	
-	# [1000000; 10000000] par pas de 1000000
-	liste_N += range(1000000, 11000000, 1000000) 
-	
 	print "\n-------------------------------------------------------"
 	print "Lancement des mesures sur les valeurs de N suivantes : "
-	print liste_N
 	print "-------------------------------------------------------\n\n"
 	
 	# Creation du fichier contenant les resultats
-	for N in liste_N:
-		nb_reps = approximation_nb_reps(N)
-		out = stocker_resultats(N, lancer_metareps(N, nb_reps))
-		print out
-		f.write(out)
-	f.close()
-	
-	# Creation du graphe
-	
-	datafile = "'" + args.csv_file + ".data'"
-	print datafile
+	for m in liste_N:
+		res = stocker_resultats_csv(m.N, lancer_metareps(m.N, m.nb_repets), csv_writer)
+		print "[INFO] N=" + str(m.N) + "   mediane :" + str(res)		
+		
 	
 	
-	f = os.popen("/usr/bin/gnuplot", "w")
-	f.write("set terminal png medium\n")
-	f.write("set output '" + args.csv_file + ".png'\n")
-	f.write("set title 'Mesure de performance'\n")
-	f.write("set xlabel 'N'\n")
-	f.write("set ylabel 'Nombre de cycles'\n")
-	f.write("set nokey\n")
-	f.write("plot " + datafile + "using 1:3 with linespoints title 'Mediane', \
-	" +  datafile + "using 1:4 with linespoints title 'Minimum'\n")
-	f.close()
+	
 
 if __name__ == '__main__':
 	main()
