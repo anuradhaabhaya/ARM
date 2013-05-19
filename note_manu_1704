@@ -1,0 +1,90 @@
+Ca commence bien, on a pas fait ce qu'il veut.
+Les poils sortent du col...
+
+
+Anus L2
+Moi L1
+Nathan L3
+ANtoine RAM
+
+
+
+Unroll loops interessant pour les petites valeurs
+O3 et O3 et march sont pareils  sur le graphe
+
+Ya que le kernel qu'il faut compiler en O2
+
+
+
+----------------------------------------------------------------
+Ils sont tous différents. (O2, O3, O3 et march) avec GCC
+Les binaires Kernel Icc02 et Icc03 sont les memes,faut le mettre dans le rapportIcc03 et Icc03xHost sont différents.
+
+
+3x N x la taille d'un double  -> pour voir les passages L1 -> L2 -> L3
+A mettre dans la partie commune
+
+
+Likwid pour confirmer qu'on est bien dans le cache dans lequel on pense etre.
+
+/!\ Attention les courbes ne seront pas pareilles /!\
+
+
+Si on met les restricts on a pas besoin des pragmas.
+
+COmparer les binaires : dif, si diferents go maqao
+
+P2: load
+P5: conversions , nerd? .. il doit pas etre trop rempli
+Vecto: pour voir pour quel type d'opé c'est pas vectorisé
+
+-vec -report  = 2   par exemple
+
+derouler une boucle : variante vecto qui va faire les ope une par une, mais si le machin n'est pas un multiple de ? le compilateur est obligé de faire une boucle pour faire les opés qui manquent.
+Donc on a au moins 2 boucles   (ça j'ai rien bité, il me manque plein de trucs)
+
+L'hyper thread est utile quand tas un theread qui calcul et un qui fait du store
+
+le temps commence a passer lentement
+
+On ne vas pas gagner du temps sur un code de calcul, et on risque d'en perdre avec le threading
+
+Sur les petites tailles c'est pas rentable, passé un stade ça devient rentable.
+Il faut comparer avec le sequentiel
+
+Sa coupe de cheveux est parfaite comme d'habude 
+
+POur determiner ou ça va il faut define affinity.... sinon on peut avoir 2 thread sur un seul processeur.
+
+Il faut regarder l'impact sur le code généré
+
+ 
+Restrict garanti au compilateur que 2 pointeurs ne peut pas pointer sur la meme zone.
+
+/!\ si on ment au compilateur on aura des resultats faux /!\
+
+posix memalign, on aligne sur la taille de vecteur, 128 en SSE ou 256 en AVX
+-> remplacer les mallocs par les posix meme align
+
+il met son gros doigt sale sur l'écran d'Antoine
+
+j'ai chaud
+j'ai chaud
+j'ai chaud
+j'ai chaud, et mon clavier est bouillant
+
+Il faut que le premier élément soit aligné c[1] n'est pas aligné
+
+Chercher: DATA PADDING   -> spour aligner les tableaux
+
+On alloue plus puis on change le premier pointeur, comme ça on est aligné
+/!\ P2 pour travaillé, free sur Pointeur original /!\
+Grace a posix memalign on est sur que le p1 est aligné 
+
+Derouler ne devrait rien gagner, sur les archi Out Of Order, a cause de la predictiopn de branchement, seulement non-pris pour la derniere iteration.
+
+For n'est pas un probleme car il sait que c'est que des Pris? (le for on s'en fout)
+
+TURBO BOOOOOOOOOOOOOOOOOOOOST
+
+
