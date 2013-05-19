@@ -20,7 +20,7 @@ void verifier_resultats(int N, double a[], double b[])
 	int i;
 	
 	for(i=0; i<N;i++)
-	{
+	{	
 		assert(a[i] == b[i]);
 	}
 }
@@ -32,6 +32,7 @@ int main(int argc, char **argv)
 	double cycles = 0;
 	
 	double *a, *b, *c, *standard;
+	void *pa, *pb, *pc, *ps;
 	
 	if(argc != 3)
 	{
@@ -47,10 +48,20 @@ int main(int argc, char **argv)
 	srand(0);
 	
 	/* Initialisation tableaux */
-	a = malloc(N*sizeof(double)); 
-	b = malloc(N*sizeof(double));
-	c = malloc(N*sizeof(double));
-	standard = malloc(N*sizeof(double));
+	//~ a = malloc(N*sizeof(double)); 
+	//~ b = malloc(N*sizeof(double));
+	//~ c = malloc(N*sizeof(double));
+	//~ standard = malloc(N*sizeof(double));
+	
+	posix_memalign(&pa, 16, N*sizeof(double));
+	posix_memalign(&pb, 16, N*sizeof(double));
+	posix_memalign(&pc, 16, N*sizeof(double));
+	posix_memalign(&ps, 16, N*sizeof(double));
+	
+	a = pa;
+	b = pb;
+	c = pc;
+	standard = ps;
 
 	if(a == NULL || b == NULL || c == NULL || standard == NULL)
 	{
@@ -73,7 +84,7 @@ int main(int argc, char **argv)
 	
 	/* Tour de chauffe */
 	/* ATTENTION : DOIT ETRE LE MEME KERNEL QUE DANS LA BOUCLE !!! */
-	kernel0(N, a, b, c);
+	kernelNTS(N, a, b, c);
 	
 	/* Lancement du kernel */
 	
@@ -81,7 +92,7 @@ int main(int argc, char **argv)
 	
 	for(i = 0; i < nb_repets; i=i+1)
 	{
-		kernel0(N, a, b, c);
+		kernelNTS(N, a, b, c);
 	}
 	
 	t2 = getticks();

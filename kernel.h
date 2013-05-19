@@ -5,6 +5,8 @@
 
 void kernelNTS(int n, double a[n], double b[n], double c[n]);
 
+void kernel5(int n, double a[n], double b[n], double c[n]);
+
 void kernel3(int n, double a[n], double b[n], double c[n]);
 
 void kernel2(int n, double a[n], double b[n], double c[n]);
